@@ -14,11 +14,11 @@ class Wicrack(object):
         print("By %s"%Wicrack.__author__)
         print("github: https://github.com/piperjames/wicrack")
 
-    menu_options = {0: 'Select Job',
-                    1: {'Wifi':     {0: 'Select Interface> ',
+    menu_options = {0: {0: 'Select Job',
+                        1: {'Wifi': {0: 'Select Interface> ',
                                      1: [],
-                                     2: 'Back<<'}},
-                    2: {'WebApp':   {0: 'Select Attack Method',
+                                    -1: 'Back<<'}},
+                        2: {'WebApp':   {0: 'Select Attack Method',
                                      1: 'SQL Injection (SQLi)',
                                      2: 'Cross Site Scripting (Xss)',
                                      3: 'Cross Site Request Forgery (CRSF)',
@@ -27,32 +27,46 @@ class Wicrack(object):
                                      6: 'Tabnabbing',
                                      7: 'Denial of Service',
                                      8: 'Man-In-The-Browser',
-                                     9: 'Back<<'}
-                        },
-                    3: {'Network':  {0: 'Select Attach Method',
+                                    -1: 'Back<<'}
+                            },
+                        3: {'Network':  {0: 'Select Attach Method',
                                      1: 'Bruteforcing',
                                      2: 'Man-In-The-Middle',
                                      3: 'Buffer Overflow',
-                                     4: 'Back<<'}}
+                                    -1: 'Back<<'}}
+                        }
                     }
 
     def __init__(self):
         Wicrack.info()
         self.current_menu_option = [0]
+        self.current_menu = 0
         self.menu()
 
-    def menu(self):
+    def menu(self, current_menu=None):
         print("")
-        for key in Wicrack.menu_options.keys():
-            if key == 0:
-                print(Wicrack.menu_options[key])
-            else:
-                print("["+key+"] "+Wicrack.menu_options[key].keys())
-                for opt in Wicrack.menu_options[key].keys():
-                    print("["+str(key)+"] "+Wicrack.menu_options[key][opt].keys())
+        if current_menu == None:
+            self.current_option = Wicrack.menu_options[0]
+            for key in Wicrack.menu_options[0].keys():
+                if key == 0:
+                    print(Wicrack.menu_options[0][key])
+                else:
+                    for opt in Wicrack.menu_options[0][key].keys():
+                        print("[%d] %s"%(key, opt))
+        else:
+            for key in Wicrack.menu_options[current_menu].keys():
+                if key == 0:
+                    print(Wicrack.menu_options[current_menu][key])
+                else:
+                    for opt in Wicrack.menu_options[current_menu][key].keys():
+                        print("[%d] %s"%(key, opt))
+
         print("")
         try:
             job = int(input("Choose Option> "))
+            self.current_menu_option.append(job)
+            self.current_menu = self.current_menu_option[-1]
+            self.menu(self.current_menu)
         except Exception as e:
             job = int(input("Choose Option> "))
 
